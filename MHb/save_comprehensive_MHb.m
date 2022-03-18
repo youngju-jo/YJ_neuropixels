@@ -1,19 +1,13 @@
-function plot_comprehensive_MHb(cohort, list_sess, list_unit, list_ID)
+function save_comprehensive_MHb(cohort, list_sess, list_unit, list_ID, savedir)
+
+% temporary function (not modularized) - saving-enabled plot_comprehensive_MHb
 
 global atlas
 load('C:\Users\YoungJu Jo\Dropbox\Ephys\YJ_neuropixels\hStripe0.mat');
 
-figure('units','normalized','outerposition',[0 0 1 1]); set(gcf,'color','w');
-
-unitNum = 1;
-while true
+for unitNum = 1:numel(list_unit)
     
-    % circular unit indexing for browsing
-    if unitNum == 0
-        unitNum = numel(list_unit);
-    elseif unitNum == numel(list_unit)+1
-        unitNum = 1;
-    end
+    h = figure('units','normalized','outerposition',[0 0 1 1]); set(gcf,'color','w');
     
     idx_sess = list_sess(unitNum);
     idx_unit = list_unit(unitNum);
@@ -252,17 +246,13 @@ while true
     % even spike duration seems to be unreliable -- should dig into the source code later
     %}
     
-    %% browsing: 28 leftarrow / 29 rightarrow / 30 uparrow / 31 downarrow
+    cd(savedir);
+    %saveas(h, num2str(10000+unitNum),'pdf');  % size does not fit with this
+    set(h,'Units','Inches');
+    pos = get(h,'Position');
+    set(h,'PaperPositionMode','Auto','PaperUnits','Inches','PaperSize',[pos(3), pos(4)])
+    print(h,num2str(10000+unitNum),'-dpdf','-r0')
     
-    waitforbuttonpress;
-    arrow = double(get(gcf,'CurrentCharacter'));
-    if arrow==28
-        unitNum = unitNum - 1;
-    elseif arrow==29
-        unitNum = unitNum + 1;
-    else
-        break;
-    end
+    close;
     
 end
-

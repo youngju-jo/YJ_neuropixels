@@ -17,7 +17,7 @@ atlas.st = loadStructureTree('structure_tree_safe_2017.csv'); % a table of what 
 
 %% cohort_info: data directories (from cohort_MHb.m)
 
-cohort_type = 3;  % 1: Tac1, 2: septum, 3: perturbation
+cohort_type = 1;  % 1: Tac1, 2: septum, 3: perturbation
 cohort = cohort_MHb(cohort_type);
 
 
@@ -91,7 +91,7 @@ end
 
 % always, target neurons should be set first for the downstream population analyses
 
-cond1 = cohort_flat.region==483;  % 483: MHb / 186: LHb / 564: MS / 581: TRS;
+cond1 = cohort_flat.region==149;  % 483: MHb / 186: LHb / 149: PVT / 564: MS / 581: TRS
 cond2 = optotagged;
 cond3 = 1; cohort_flat.coord(:,3) < 2850; % is_dorsal_MHb(cohort_flat.coord, 0.5); %cohort_flat.coord(:,3) < 2900;
 cond4 = 1;
@@ -105,6 +105,9 @@ disp(sum(cond));
 
 % "neuron card"
 plot_comprehensive_MHb(cohort, list_sess, list_unit, list_ID);
+%save_comprehensive_MHb(cohort, list_sess, list_unit, list_ID, 'C:\Users\YoungJu Jo\Dropbox\Ephys\MHb_data\NeuronCards\PVT');
+
+% hold off;
 
 %%
 

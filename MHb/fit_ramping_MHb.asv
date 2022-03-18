@@ -15,7 +15,8 @@ for uidx = 1:nn
     %linear fit
     %lnEqn = 'a*x + b'; %powEqn = 'x^a + b';
     %tic; f1 = fit(axis_trial', rate_across_trial, lnEqn); toc;
-    f1 = fit(axis_trial', rate_across_trial, 'poly1');
+    f1 = fit(axis_trial', rate_across_trial, 'poly1'); toc;
+    
     
     % polyfit is much faster but cannot automatically generate fitobject necessary for confidence interval calculation
     % coefficients = polyfit(axis_trial', rate_across_trial, 1); toc;
@@ -32,8 +33,8 @@ for uidx = 1:nn
 
     Rsq = 1 - sum((rate_across_trial - f1(axis_trial)).^2)/sum((rate_across_trial - mean(rate_across_trial)).^2);
     ramping_N.Rsq = [ramping_N.Rsq; Rsq];
-    ramping_N.param = [ramping_N.param; f1.p1 f1.p2];
+    ramping_N.param = [ramping_N.param; f1.a f1.b];
 
-    %disp(uidx);
+    disp(uidx);
     
 end
