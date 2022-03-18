@@ -17,7 +17,7 @@ atlas.st = loadStructureTree('structure_tree_safe_2017.csv'); % a table of what 
 
 %% cohort_info: data directories (from cohort_MHb.m)
 
-cohort_type = 3;  % 1: Tac1, 2: septum, 3: perturbation
+cohort_type = 1;  % 1: Tac1, 2: septum, 3: perturbation
 cohort = cohort_MHb(cohort_type);
 
 
@@ -44,7 +44,7 @@ cond1 = cohort_flat.isiviolation < 0.5;
 cond2 = cohort_flat.fr > 0.2;
 cond3 = 1;
 cond4 = 1;
-cond5 = 1; %cohort_flat.sess == 1;
+cond5 = 1; %cohort_flat.sess == 9;
 cond = logical(cond1.*cond2.*cond3.*cond4.*cond5); disp(sum(cond));
 
 % filtering
@@ -60,7 +60,7 @@ if cohort_type == 1
     %optotagged = logical((cohort_flat.salt_I > 0.2) .* (cohort_flat.spike_probability > 0.2) .* (cohort_flat.spike_latency < 0.020)); disp(sum(optotagged)); % .* (cohort_flat.wf_corr > 0.3)); 
     % figure, hist(cohort_flat.wf_corr)
 elseif cohort_type == 3
-    optotagged = logical((cohort_flat.salt_p < 0.01) .* (cohort_flat.spike_probability > 0.2));
+    optotagged = logical((cohort_flat.salt_I > 0.2) .* (cohort_flat.spike_probability > 0.3) .* (cohort_flat.spike_latency < 0.020)); disp(sum(optotagged));
 end
 
 % atlas visualization
@@ -92,10 +92,10 @@ end
 % always, target neurons should be set first for the downstream population analyses
 
 cond1 = cohort_flat.region==483;  % 483: MHb / 186: LHb / 564: MS / 581: TRS;
-cond2 = optotagged;
-cond3 = 1; cohort_flat.coord(:,3) < 2850; % is_dorsal_MHb(cohort_flat.coord, 0.5); %cohort_flat.coord(:,3) < 2900;
+cond2 = 1;% optotagged;
+cond3 = cohort_flat.coord(:,3) < 2800; % is_dorsal_MHb(cohort_flat.coord, 0.5); %cohort_flat.coord(:,3) < 2900;
 cond4 = 1;
-cond5 = 1; %cohort_flat.sess == 4;
+cond5 = 1; %cohort_flat.sess ~= 11;
 cond = logical(cond1.*cond2.*cond3.*cond4.*cond5.*ones(numel(cohort_flat.id),1)); 
 [list_sess, list_unit, list_ID] = vector2index(cohort, cohort_flat, cond);
 disp(sum(cond));
@@ -130,8 +130,8 @@ plot_raster_MHb(cohort, list_sess, list_unit, list_ID, trialType, [-0.5 1.5 0.01
 do_zscore = 1;
 
 % check number of existing trials across sessions
-% figure, plot(mean(isnan(rate_BxtxN), [2,3]));  
-num_last_trials = 150;
+% figure, plot(mean(isnan(spike_BxtxN), [2,3]));  
+num_last_trials = 80;
 
 % cue aligned rate in rewarded trials
 % ***for heatmap: with smoothing***

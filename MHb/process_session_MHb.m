@@ -42,7 +42,7 @@ numUnit = numel(s.spike_su);
     
 if isfield(s, 'registered_coord_shank0')
     
-    load('C:\Users\YoungJu Jo\Dropbox\Ephys\YJ_ephys_npx\hStripe0.mat');
+    load('C:\Users\YoungJu Jo\Dropbox\Ephys\YJ_neuropixels\hStripe0.mat');
     shankind_ = shankind(connected==1);
     % hardcoded: e.g., 171_0926 has channel 112 (matlab indexing) automatically disabled due to noise level
     if session_info.info == '171_20210926'

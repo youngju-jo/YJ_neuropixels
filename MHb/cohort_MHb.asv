@@ -210,7 +210,7 @@ elseif cohort_type == 3  % perturbation
     s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0188_20211203_behavior_stim_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0188\Optostim1pShort\Session Data\ANM_0188_Optostim1pShort_20211203_151948.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0188\NoImageCueLightRewardStim1p\Session Data\ANM_0188_NoImageCueLightRewardStim1p_20211203_142222.mat');
-    s.info = '188_20211203'; cohort_info{end+1} = s;
+    s.info = '188_20211203'; cohort_info{1} = s; %cohort_info{end+1} = s;
 
     % 190
  
@@ -218,14 +218,14 @@ elseif cohort_type == 3  % perturbation
     s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0190_20211202_behavior_stim_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0190\Optostim1pShort\Session Data\ANM_0190_Optostim1pShort_20211203_002346.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0190\NoImageCueLightRewardStim1p\Session Data\ANM_0190_NoImageCueLightRewardStim1p_20211202_214837.mat');
-    s.info = '190_20211202'; cohort_info{end+1} = s;
+    s.info = '190_20211202'; cohort_info{1} = s; %cohort_info{end+1} = s;
 
     % 20211203
     s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0190_20211203_behavior_stim_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0190\Optostim1pShort\Session Data\ANM_0190_Optostim1pShort_20211203_165827.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0190\NoImageCueLightRewardStim1p\Session Data\ANM_0190_NoImageCueLightRewardStim1p_20211203_161012.mat');
-    s.info = '190_20211203'; cohort_info{end+1} = s;
-
+    s.info = '190_20211203'; cohort_info{1} = s; %cohort_info{end+1} = s;
+%} 
 else
     error('Check cohort name!');
 end

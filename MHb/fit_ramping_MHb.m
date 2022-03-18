@@ -4,12 +4,13 @@ ramping_N.class = [];
 ramping_N.param = [];
 ramping_N.Rsq = [];
 
-[tt,nn] = size(rate_baseline_BxN);
+[~,nn] = size(rate_baseline_BxN);
 
 for uidx = 1:nn
     
-    axis_trial = 1:tt;
     rate_across_trial = rate_baseline_BxN(:,uidx);
+    rate_across_trial = rate_across_trial(~isnan(rate_across_trial));
+    axis_trial = 1:numel(rate_across_trial);
     
     %linear fit
     lnEqn = 'a*x + b'; %powEqn = 'x^a + b';

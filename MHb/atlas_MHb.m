@@ -26,7 +26,7 @@ end
 coord_display(:,1) = coord_display(:,1) - 570 + offset_ML_1;
 coord_display(:,3) = coord_display(:,3) - 230;
 
-figure;
+figure('units','normalized','outerposition',[0 0 1 1]); set(gcf,'color','w');
 for ii = 1:5
     subplot(1,5,ii);
     imagesc(squeeze(atlas.tv(540 + APc(ii),offset_DV_1+1:end-offset_DV_2,570-offset_ML_1+1:end-offset_ML_2)), [0 300]); axis image; axis off; colormap gray; title(strcat('AP=', num2str(-10*APc(ii)))); hold on;
@@ -54,4 +54,3 @@ for ii = 1:5
     
     hold off;
 end
-set(gcf,'color','w');

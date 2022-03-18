@@ -54,7 +54,7 @@ while true
     subplot(212);
     generate_raster(TTL_of_interest, countParam, cohort{idx_sess}.spike_su, cohort{idx_sess}.list_su, idx_unit);
     if trialType == -2
-        title(strcat('I=', num2str(cohort{idx_sess}.salt_I(idx_unit), '%.3f'), ' / fr=', num2str(cohort{idx_sess}.metrics{idx_unit,3}, '%.1f'), 'Hz / latency=', num2str(cohort{idx_sess}.spike_latency(idx_unit)*1000, '%.1f'), 'ms / jitter=', num2str(cohort{idx_sess}.spike_jitter(idx_unit)*1000, '%.1f'), 'ms / Psp=', num2str(cohort{idx_sess}.spike_probability(idx_unit)), ' / frc=', num2str(cohort{idx_sess}.fr_change(idx_unit))));
+        title(strcat('I=', num2str(cohort{idx_sess}.salt_I(idx_unit), '%.3f'), ' / fr=', num2str(cohort{idx_sess}.metrics{idx_unit,3}, '%.1f'), 'Hz / latency=', num2str(cohort{idx_sess}.spike_latency(idx_unit)*1000, '%.1f'), 'ms / jitter=', num2str(cohort{idx_sess}.spike_jitter(idx_unit)*1000, '%.1f'), 'ms / Psp=', num2str(cohort{idx_sess}.spike_probability(idx_unit), '%.3f'), ' / frc=', num2str(cohort{idx_sess}.fr_change(idx_unit))));
         for lidx = 1:10
             xline((lidx-1)*0.1, '-r');
         end
