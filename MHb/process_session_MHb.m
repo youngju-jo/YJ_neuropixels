@@ -102,13 +102,15 @@ for t=1:nTrials
         reactionTime(t) = x.DeliverCue(2) - x.DeliverCue(1);
     elseif ~isnan(x.NoReward(1))  % reward omission
         trialMatrix(t) = 2;
-        reactionTime(t) = x.DeliverCue(2) - x.DeliverCue(1);
-    elseif cohort_type == 3
+        reactionTime(t) = x.DeliverCue(2) - x.DeliverCue(1);  
+    else  % miss
+        trialMatrix(t) = 3;
+    end
+    
+    if cohort_type == 3
         if ~isnan(x.OptoStim(1))  % stim trial
             trialMatrix(t) = 0;
         end
-    else  % miss
-        trialMatrix(t) = 3;
     end
 
     ts_TTL(t) = session_info.d_bhvr.SessionData.TrialStartTimestamp(trialIdx(t)) + x.TTL(2);  % TTL offset (= cue onset) from bpod

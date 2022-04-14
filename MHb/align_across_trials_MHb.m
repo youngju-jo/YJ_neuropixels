@@ -12,6 +12,10 @@ for idx_sess = 1:numel(cohort)
         
         if trialType == -1
             TTL_of_interest = TTL_trial;
+        elseif trialType == -2
+            TTL_stimblock = cohort{idx_sess}.TTL_stimblock;
+            idxTrial = ((cohort{idx_sess}.trial_width==0.010).*(cohort{idx_sess}.trial_freq==10).*(cohort{idx_sess}.trial_power==5))==1;
+            TTL_of_interest = TTL_stimblock(idxTrial);
         else
             TTL_of_interest = TTL_trial(trialMatrix==trialType);
         end

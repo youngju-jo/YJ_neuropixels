@@ -27,8 +27,8 @@ while true
     APi = 100; APf = APi + 160; 
 
     % visualization offsets
-    offset_ML_1 = 20; offset_ML_2 = 460;
-    offset_DV_1 = 230; offset_DV_2 = 350; 
+    offset_ML_1 = 20; offset_ML_2 = 460; %460/410
+    offset_DV_1 = 230; offset_DV_2 = 350; %350/100
 
     % convert coordinates
     APc = linspace(APi,APf,5); APthickness = APc(2)-APc(1); APt = APc - APthickness/2;
@@ -51,21 +51,27 @@ while true
     
 
     %% stim response raster
-    subplot(245);
+    if isfield(cohort{idx_sess}, 'wf_stim')
+        subplot(245);
 
-    TTL_stimblock = cohort{idx_sess}.TTL_stimblock;
-    idxTrial = ((cohort{idx_sess}.trial_width==0.010).*(cohort{idx_sess}.trial_freq==10).*(cohort{idx_sess}.trial_power==5))==1;
-    TTL_of_interest = TTL_stimblock(idxTrial);
+        TTL_stimblock = cohort{idx_sess}.TTL_stimblock;
+        idxTrial = ((cohort{idx_sess}.trial_width==0.010).*(cohort{idx_sess}.trial_freq==10).*(cohort{idx_sess}.trial_power==5))==1;
+        TTL_of_interest = TTL_stimblock(idxTrial);
 
-    [spikeTimesOfTrials, trialIndexOfTrials] = prepare_raster(TTL_of_interest, cohort{idx_sess}.spike_su{idx_unit}, -0.5, +1.5);
+        [spikeTimesOfTrials, trialIndexOfTrials] = prepare_raster(TTL_of_interest, cohort{idx_sess}.spike_su{idx_unit}, -0.5, +1.5);
+        
+        if isempty(spikeTimesOfTrials)
+            cla;
+        else
+            plot(spikeTimesOfTrials, trialIndexOfTrials, '.k');
+            ylim([0-3, max(trialIndexOfTrials)+3]); set(gca, 'YDir','reverse'); ylabel('Trials');
+            xlim([-0.5 +1.5]); xlabel('Time from stim onset (s)');
+        end
+        title(strcat('I=', num2str(cohort{idx_sess}.salt_I(idx_unit), '%.3f'), ' / latency=', num2str(cohort{idx_sess}.spike_latency(idx_unit)*1000, '%.1f'), 'ms / jitter=', num2str(cohort{idx_sess}.spike_jitter(idx_unit)*1000, '%.1f'), 'ms / Psp=', num2str(cohort{idx_sess}.spike_probability(idx_unit), '%.3f')));
+        for lidx = 1:10
+            xline((lidx-1)*0.1, '-r');
+        end
 
-    plot(spikeTimesOfTrials, trialIndexOfTrials, '.k')
-    ylim([0-3, max(trialIndexOfTrials)+3]); set(gca, 'YDir','reverse'); ylabel('Trials');
-    xlim([-0.5 +1.5]); xlabel('Time from stim onset (s)');
-
-    title(strcat('I=', num2str(cohort{idx_sess}.salt_I(idx_unit), '%.3f'), ' / latency=', num2str(cohort{idx_sess}.spike_latency(idx_unit)*1000, '%.1f'), 'ms / jitter=', num2str(cohort{idx_sess}.spike_jitter(idx_unit)*1000, '%.1f'), 'ms / Psp=', num2str(cohort{idx_sess}.spike_probability(idx_unit), '%.3f')));
-    for lidx = 1:10
-        xline((lidx-1)*0.1, '-r');
     end
 
 

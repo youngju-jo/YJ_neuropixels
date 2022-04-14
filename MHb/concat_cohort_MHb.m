@@ -19,7 +19,7 @@ cohort_flat.presenceratio = [];
 % optotagging
 cohort_flat.salt_I = concat_field(cohort, 'salt_I');
 cohort_flat.salt_p = concat_field(cohort, 'salt_p');
-cohort_flat.fr_changep = concat_field(cohort, 'fr_change');
+%cohort_flat.fr_changep = concat_field(cohort, 'fr_change');
 cohort_flat.spike_probability = concat_field(cohort, 'spike_probability');
 cohort_flat.spike_latency = concat_field(cohort, 'spike_latency');
 cohort_flat.spike_jitter = concat_field(cohort, 'spike_jitter');
