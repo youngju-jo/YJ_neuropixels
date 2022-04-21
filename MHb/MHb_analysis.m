@@ -22,16 +22,18 @@ groups_of_interest = {'MH', 'LH', 'LAT', 'MED', 'MTN', 'ILM', 'DORsm', 'MB', 'HI
 
 %% Load and process data (note: to skip local processing, load the saved .mat files below)
 
-cohort_type = 1;  % 1: Tac1, 2: septum, 3: perturbation
+cohort_type = 3;  % 1: Tac1, 2: septum, 3: perturbation
 
+%{
 cohort = cohort_MHb(cohort_type);
 mergestructs = @(x,y) cell2struct([struct2cell(x);struct2cell(y)],[fieldnames(x);fieldnames(y)]);
 for idx_sess = 1:numel(cohort)
     cohort{idx_sess} = mergestructs(cohort{idx_sess}, process_session_MHb(cohort{idx_sess}, cohort_type));
 end
+%}
 % save('cohort_Tac1.mat', 'cohort', '-v7.3');  % load('cohort_Tac1.mat');
 % save('cohort_septum.mat', 'cohort', '-v7.3');  % load('cohort_septum.mat');
-% save('cohort_perturbation.mat', 'cohort', '-v7.3');  % load('cohort_perturbation.mat');
+% save('cohort_perturbation.mat', 'cohort', '-v7.3'); % load('cohort_perturbation.mat');
 
 %{
 % for peak-sorted activity plots
@@ -39,6 +41,12 @@ load('cohort_Tac1.mat'); cohort_MHb = cohort;
 load('cohort_septum.mat'); cohort_septum = cohort;
 cohort = [cohort_MHb cohort_septum];
 clear cohort_MHb cohort_septum
+
+% for PSTH plots
+load('cohort_Tac1.mat'); cohort_MHb = cohort;
+load('cohort_perturbation.mat'); cohort_perturbation = cohort;
+cohort = [cohort_MHb cohort_perturbation];
+clear cohort_MHb cohort_perturbation
 %}
 
 % concat_field: extract certain fields (e.g., concat_field(cohort, 'unit_region'))
@@ -114,14 +122,15 @@ figure, imagesc(squeeze(vol_of_interest(600,:,:)));
 
 cond1 = cohort_flat.region==483;  % 483: MHb / 186: LHb / 149: PVT / 564: MS / 581: TRS
 cond2 = optotagged;
-cond3 = 1; %is_dorsal_MHb(cohort_flat.coord, 0.4); %cohort_flat.coord(:,3) < 2900;
+cond3 = 1; %is_dorsal_MHb(cohort_flat.coord, 0.2); %cohort_flat.coord(:,3) < 2900;
 cond4 = 1;
-cond5 = cohort_flat.sess == 3;
+cond5 = 1; %cohort_flat.sess == 3;
 cond = logical(cond1.*cond2.*cond3.*cond4.*cond5.*ones(numel(cohort_flat.id),1)); 
 [list_sess, list_unit, list_ID] = vector2index(cohort, cohort_flat, cond);
 disp(sum(cond));
 
-% sess 4, 5, (10), *12*
+% sess 4, 5, (10), *12* / all: 4, 5, 10, 12, 15, 18
+% for LHb: try gating the LHb signal based on ML coordinates?
 
 % atlas visualization
 % atlas_MHb_specified(cohort_flat, cond);
@@ -139,6 +148,7 @@ plot_comprehensive_MHb(cohort, list_sess, list_unit, list_ID);
 
 trialType = 0;
 plot_raster_MHb(cohort, list_sess, list_unit, list_ID, trialType, [-2.0 4.0 0.010 20]);
+plot_raster2_MHb(cohort, list_sess, list_unit, list_ID, trialType, [-2.0 4.0 0.010 20], [-2, 0]);  % baseline-subtracted
 
 %plot_raster_MHb(cohort, list_sess, list_unit, list_ID, trialType, [-0 0.033 0.010 20]);
 %trialType = -2; plot_raster_MHb(cohort, list_sess, list_unit, list_ID, trialType, [-0.5 1.5 0.010 2]);
@@ -147,73 +157,104 @@ plot_raster_MHb(cohort, list_sess, list_unit, list_ID, trialType, [-2.0 4.0 0.01
 % idx_sess = 12; plot_raster2(cohort{idx_sess}.TTL_trial(cohort{idx_sess}.trialMatrix==1), [-2.0 4.0 0.010 20], cohort{idx_sess}.spike_su(cohort{idx_sess}.unit_region==483), cohort{idx_sess}.list_su(cohort{idx_sess}.unit_region==483), 1);
 
 
-%% PSTH: reward delivery vs omission
+%% PSTH: rewarded/unrewarded/stim (cohort type 1 and 3)
 
-% within-trial processing
-% (1) trial averaging within session (and baseline subtraction given the ramping)
-% (2) concat (neuron x time) matrices
-% (3) mean/sem calculation along the neuron dimension
-% (4) smoothing for visualization
+trialType = 0; 
+do_zscore = 1; countParam = [-4, 7, 0.010 1]; bsln_time = [-1, 0]; nboot = 100; g_std = 20;
 
-do_zscore = 1;
+dFR_nbootxt = PSTH2_MHb(cohort, list_sess, list_unit, trialType, do_zscore, countParam, bsln_time, nboot);
+bsln_idx = window_time2idx(bsln_time, countParam);
+analysis_idx = window_time2idx(bsln_time+countParam(2), countParam);
 
-% cue aligned rate
-delta_rate_rw = align_cue_MHb(cohort, list_sess, list_unit, 1, do_zscore);
-delta_rate_nr = align_cue_MHb(cohort, list_sess, list_unit, 2, do_zscore);
-%delta_rate_ms = align_cue_MHb(cohort, list_sess, list_unit, 3, do_zscore);
+[dFR_mean, dFR_sem] = smooth_PSTH_MHb(dFR_nbootxt, g_std, bsln_idx);
+% PSTH visualization
+figure;
+tAxisPSTH = bsln_time(1):countParam(3):countParam(2);
+shadedErrorBar(tAxisPSTH, dFR_mean, dFR_sem, {'Color', [0.5 0 0]}, 0.8);
+xlabel('Time from cue/stim (s)'); xline(0,'--'); xlim([tAxisPSTH(1),tAxisPSTH(end)]);
+yline(0,'--'); ylim([-1 3]); ylim([-0.25 0.25]); 
+if do_zscore
+    ylabel('delta(firing rate) (z-score)');
+else
+    ylabel('delta(firing rate) (spikes/s)'); 
+end
+uniformFigureProps();
 
-% PSTH calculation and smoothing
+p = sum(mean(dFR_nbootxt(:,analysis_idx(1):analysis_idx(2)),2) < 0) / nboot;
+disp(p);
+
+% figure, hist(mean(dFR_nbootxt(:,analysis_idx(1):analysis_idx(2)),2),20)
+% rate_S_bxtxN = align_MHb(cohort, list_sess, list_unit, trialType, do_zscore, countParam);
+
+% dFR_rw = dFR_nbootxt; save('C:\Users\YoungJu Jo\Dropbox\Ephys\MHb_data\PSTH_rw_1.mat', 'dFR_rw', 'do_zscore', 'countParam', 'bsln_time', 'bsln_idx', 'analysis_idx', '-v7.3');
+% dFR_nr = dFR_nbootxt; save('C:\Users\YoungJu Jo\Dropbox\Ephys\MHb_data\PSTH_nr_1.mat', 'dFR_nr', 'do_zscore', 'countParam', 'bsln_time', 'bsln_idx', 'analysis_idx', '-v7.3');
+% dFR_stim = dFR_nbootxt; save('C:\Users\YoungJu Jo\Dropbox\Ephys\MHb_data\PSTH_stim_1.mat', 'dFR_stim', 'do_zscore', 'countParam', 'bsln_time', 'bsln_idx', 'analysis_idx', '-v7.3');
+
+
+%% PSTH summary and stats
+
+load('C:\Users\YoungJu Jo\Dropbox\Ephys\MHb_data\PSTH_rw_1.mat');
+load('C:\Users\YoungJu Jo\Dropbox\Ephys\MHb_data\PSTH_nr_1.mat');
+load('C:\Users\YoungJu Jo\Dropbox\Ephys\MHb_data\PSTH_stim_1.mat');
+
+% smoothing
 g_std = 20;  % 200 ms std, causal half-gaussian smoothing after 10 ms binning
-half_gaussian = gaussmf(-g_std*5:g_std*5,[g_std 0]); half_gaussian(1:g_std*5) = 0; half_gaussian = half_gaussian/sum(half_gaussian); 
-delta_rate_rw_mean = conv(mean(delta_rate_rw,1), half_gaussian, 'same'); delta_rate_rw_mean = delta_rate_rw_mean(201:end);
-delta_rate_rw_sem = conv(std(delta_rate_rw,1)/sqrt(size(delta_rate_rw,1)), half_gaussian, 'same'); delta_rate_rw_sem = delta_rate_rw_sem(201:end);
-delta_rate_nr_mean = conv(mean(delta_rate_nr,1), half_gaussian, 'same'); delta_rate_nr_mean = delta_rate_nr_mean(201:end);
-delta_rate_nr_sem = conv(std(delta_rate_nr,1)/sqrt(size(delta_rate_nr,1)), half_gaussian, 'same'); delta_rate_nr_sem = delta_rate_nr_sem(201:end);
+[dFR_rw_mean, dFR_rw_sem] = smooth_PSTH_MHb(dFR_rw, g_std, bsln_idx);
+[dFR_nr_mean, dFR_nr_sem] = smooth_PSTH_MHb(dFR_nr, g_std, bsln_idx);
+[dFR_stim_mean, dFR_stim_sem] = smooth_PSTH_MHb(dFR_stim, g_std, bsln_idx);
 
 % PSTH visualization
-figure; set(gcf,'color','w');
-tAxisPSTH = -2:0.010:6;
-shadedErrorBar(tAxisPSTH,delta_rate_rw_mean,delta_rate_rw_sem, {'Color', [0 0.5 0]}, 0.8); hold on;
-shadedErrorBar(tAxisPSTH,delta_rate_nr_mean,delta_rate_nr_sem, {'Color', [0.2 0.2 0.2]}, 0.8); hold off;
-xlabel('Time from cue (s)'); xline(0,'--');
+figure;
+tAxisPSTH = bsln_time(1):countParam(3):countParam(2);
+%shadedErrorBar(tAxisPSTH, dFR_rw_mean, dFR_rw_sem, {'Color', [0 0.5 0]}, 0.8); hold on;
+shadedErrorBar(tAxisPSTH, dFR_nr_mean, dFR_nr_sem, {'Color', [0.2 0.2 0.2]}, 0.8);
+%shadedErrorBar(tAxisPSTH, dFR_stim_mean, dFR_stim_sem, {'Color', [0.5 0 0]}, 0.8); hold off;
+xlabel('Time from cue/stim (s)'); xline(0,'--'); xlim([tAxisPSTH(1),tAxisPSTH(end)]);
+yline(0,'--'); ylim([-1 3.6]); ylim([-0.15 0.25]); 
 if do_zscore
-    ylabel('? Firing rate (z-score)');
+    ylabel('delta(firing rate) (z-score)');
 else
-    ylabel('? Firing rate (spikes/s)'); 
+    ylabel('delta(firing rate) (spikes/s)'); 
 end
-% title('Pan-neuronal LHb'); % title('Tac1 LHb'); % title('Tac1 MHb');
+uniformFigureProps();
 
-% try gating the LHb signal based on ML coordinates?
-% given the size of error bar, what if we do neuron averaging first, concatenate trials, and do trial averaging?
+% stats
+test_dFR_rw = mean(dFR_rw(:,analysis_idx(1):analysis_idx(2)),2);
+p_rw = sum(test_dFR_rw < 0) / numel(test_dFR_rw);
+test_dFR_nr = mean(dFR_nr(:,analysis_idx(1):analysis_idx(2)),2);
+p_nr = sum(test_dFR_nr < 0) / numel(test_dFR_nr);
+test_dFR_stim = mean(dFR_stim(:,analysis_idx(1):analysis_idx(2)),2);
+p_stim = sum(test_dFR_stim < 0) / numel(test_dFR_stim);
+disp([p_rw; p_nr; p_stim]);
 
-
-%% stim
-
-% add annotations to the optotagging analysis script
-% next time, use even lower freq for optotagging (1-2 Hz?) -- pulse train is just for visualization
-
-do_zscore = 1;
-
-delta_rate_perturbation = align_cue_MHb(cohort, list_sess, list_unit, 1, do_zscore);
-
-g_std = 20;  % 200 ms std, causal half-gaussian smoothing after 10 ms binning
-half_gaussian = gaussmf(-g_std*5:g_std*5,[g_std 0]); half_gaussian(1:g_std*5) = 0; half_gaussian = half_gaussian/sum(half_gaussian); 
-delta_rate_perturbation_mean = conv(mean(delta_rate_perturbation,1), half_gaussian, 'same'); delta_rate_perturbation_mean = delta_rate_perturbation_mean(201:end);
-delta_rate_perturbation_sem = conv(std(delta_rate_perturbation,1)/sqrt(size(delta_rate_perturbation,1)), half_gaussian, 'same'); delta_rate_perturbation_sem = delta_rate_perturbation_sem(201:end);
-    
-figure; set(gcf,'color','w');
-tAxisPSTH = -2:0.010:6;
-shadedErrorBar(tAxisPSTH,delta_rate_perturbation_mean,delta_rate_perturbation_sem, {'Color', [0.5 0 0]}, 0.8);
-xlabel('Time from cue (s)'); xline(0,'--');
+figure;
+errorbar(1:3,[mean(test_dFR_rw) mean(test_dFR_nr) mean(test_dFR_stim)], [std(test_dFR_rw) std(test_dFR_nr) std(test_dFR_stim)], 'o');
+yline(0,'--'); xlim([0.5 3.5]);
+xt = 1:3; xtlbl = {'Rewarded', 'Unrewarded', 'Perturbation'}; set(gca, 'XTick', xt, 'XTickLabel', xtlbl);
 if do_zscore
-    ylabel('Delta firing rate (z-score)');
+    ylabel('delta(firing rate) (z-score)');
 else
-    ylabel('Delta Firing rate (spikes/s)'); 
+    ylabel('delta(firing rate) (spikes/s)'); 
 end
+uniformFigureProps();
 
+
+%% effect of stim
+
+do_zscore = 1; countParam = [-4, 7, 0.010 1]; bsln_time = [-2, 0]; nboot = 100;
+perturbation_analysis_MHb(cohort, list_sess, list_unit, do_zscore, countParam, bsln_time, nboot);
+
+
+%% time constant of stim
+
+% stim-effect time constant: signed rank test as in task-modulation analysis?
 
 
 %% stim session across trials?
+
+
+% add annotations to the optotagging analysis script
+% next time, use even lower freq for optotagging (1-2 Hz?) -- pulse train is just for visualization
 
 size(rate_BxtxN)
 
@@ -254,22 +295,12 @@ trialType = -2; plot_raster_MHb(cohort, list_sess, list_unit, list_ID, trialType
 
 
 
-        
-
-%% autocorrelation
-
-[ac,xbin] = acf(cohort{1}.spike_su{10}, 0.010, 0.3);
-figure, plot(xbin, ac, '.');
-
-[K, Qi, Q00, Q01, Ri] = ccg(cohort{1}.spike_su{10}, cohort{1}.spike_su{10}, 100, 0.010);
-K_ = K; K_(501) = 0;
 
 
 
 
 
 
-%%
 
 %% Activity across trials -- try including unrewarded trials but excluding miss trials?
 
@@ -535,7 +566,6 @@ b.CData(idx_group+1,:) = [0.2 0.2 0.2]; b.CData(idx_group+2,:) = [0.2 0.2 0.2];
 xt = 1:numel(groups_of_interest_opto); xtlbl = groups_of_interest_opto; set(gca, 'XTick', xt, 'XTickLabel', xtlbl);
 ylabel('Fraction task-modulated'); ylim([0 1]); yline(sum(h_Nx1)/numel(h_Nx1), '--k', 'LineWidth', 1);
 
-
 % average activity cluster - fraction quantification - clustering can be
 % updated, but write this framework first
 
@@ -571,6 +601,15 @@ for idxTrial = 1:size(spike_bxtxn,1)
     D(idxTrial).epochstarts = 2001;
 end
 save('MHb_DataHigh_test.mat', 'D');
+%}
+
+% autocorrelation
+%{
+[ac,xbin] = acf(cohort{1}.spike_su{10}, 0.010, 0.3);
+figure, plot(xbin, ac, '.');
+
+[K, Qi, Q00, Q01, Ri] = ccg(cohort{1}.spike_su{10}, cohort{1}.spike_su{10}, 100, 0.010);
+K_ = K; K_(501) = 0;
 %}
 
 % angles

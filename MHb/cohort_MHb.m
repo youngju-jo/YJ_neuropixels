@@ -198,8 +198,8 @@ elseif cohort_type == 2  % septum
     
 elseif cohort_type == 3  % perturbation
     
-    % 188
-
+    % 188 (excluded due to low optotagged MHb neuron count?)
+    
     % 20211202
     s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0188_20211202_behavior_stim_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0188\Optostim1pShort\Session Data\ANM_0188_Optostim1pShort_20211202_175829.mat');
@@ -211,7 +211,8 @@ elseif cohort_type == 3  % perturbation
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0188\Optostim1pShort\Session Data\ANM_0188_Optostim1pShort_20211203_151948.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0188\NoImageCueLightRewardStim1p\Session Data\ANM_0188_NoImageCueLightRewardStim1p_20211203_142222.mat');
     s.info = '188_20211203'; cohort_info{end+1} = s;
-
+    
+    
     % 190
  
     % 20211202
