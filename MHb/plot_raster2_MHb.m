@@ -49,21 +49,26 @@ while true
     rate_visualization = mean(rate_bxt,1);  % trial averaging
     rate_visualization = conv(rate_visualization, half_gaussian, 'same');  % smoothing
     rate_visualization = rate_visualization(countParam(4)*5+1:end);  % cropping in time to remove smoothing artifact
-    subplot(211);
+    subplot(212);
     plot(tAxisPSTH, rate_visualization, 'k');
-    title(strcat('Session:', {' '}, num2str(idx_sess), ' / Unit ID:', {' '}, num2str(ID_unit)));  % sanity check: cohort{idx_sess}.list_su(idx_unit) should be equal to ID_unit
-    xline(0,'--'); xlim([preCueDur postCueDur]); ylabel('delta(firing rate) (Hz)'); 
+    xlim([preCueDur postCueDur]); xlabel('Time from stim onset (s)'); ylabel('delta(firing rate) (Hz)'); 
+    xline(0,'--'); xline(0.5,'--');
+    uniformFigureProps()
     
     % spike raster
-    subplot(212);
-    generate_raster(TTL_of_interest, countParam, cohort{idx_sess}.spike_su, cohort{idx_sess}.list_su, idx_unit);
+    subplot(211);
+    generate_raster(TTL_of_interest, countParam, cohort{idx_sess}.spike_su, cohort{idx_sess}.list_su, idx_unit); xline(0.5,'--'); 
     if trialType == -2
         title(strcat('I=', num2str(cohort{idx_sess}.salt_I(idx_unit), '%.3f'), ' / fr=', num2str(cohort{idx_sess}.metrics{idx_unit,3}, '%.1f'), 'Hz / latency=', num2str(cohort{idx_sess}.spike_latency(idx_unit)*1000, '%.1f'), 'ms / jitter=', num2str(cohort{idx_sess}.spike_jitter(idx_unit)*1000, '%.1f'), 'ms / Psp=', num2str(cohort{idx_sess}.spike_probability(idx_unit), '%.3f'), ' / frc=', num2str(cohort{idx_sess}.fr_change(idx_unit))));
         for lidx = 1:10
             xline((lidx-1)*0.1, '-r');
         end
     end
+    title(strcat('Session:', {' '}, num2str(idx_sess), ' / Unit ID:', {' '}, num2str(ID_unit)));  % sanity check: cohort{idx_sess}.list_su(idx_unit) should be equal to ID_unit
+    uniformFigureProps()
     hold off;
+    
+    
         
     %title('Spike raster');
     

@@ -1,9 +1,9 @@
 function rate_BxtxN = align_across_trials_MHb(cohort, list_sess, list_unit, trialType, do_zscore, do_smoothing)
 % generate ragged data cubes, [spikes per sec] or [z-score]
 % trial dimension: 500, all trials aligned by the last trials
-% time dimension: -4 to +6 s, 10 ms bins
+% time dimension: -4 to +7 s, 10 ms bins
 
-rate_BxtxN = nan(500, 1001, numel(list_sess));  % tt=1001: [-4 6 0.010 1]
+rate_BxtxN = nan(500, 1101, numel(list_sess));  % tt=1001: [-4 7 0.010 1]
 
 for idx_sess = 1:numel(cohort)
     if ismember(idx_sess,list_sess)
@@ -20,7 +20,7 @@ for idx_sess = 1:numel(cohort)
             TTL_of_interest = TTL_trial(trialMatrix==trialType);
         end
         
-        spike_bxtxn = bin_spikes(TTL_of_interest, [-4 6 0.010 1], cohort{idx_sess}.spike_su(list_unit_sess));
+        spike_bxtxn = bin_spikes(TTL_of_interest, [-4 7 0.010 1], cohort{idx_sess}.spike_su(list_unit_sess));
         
         if do_zscore == 1
             unit_mean = cohort{idx_sess}.unit_mean(list_unit_sess);

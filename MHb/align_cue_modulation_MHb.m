@@ -10,7 +10,7 @@ for idx_sess = 1:numel(cohort)
         TTL_trial = cohort{idx_sess}.TTL_trial; trialMatrix = cohort{idx_sess}.trialMatrix;
         
         list_unit_sess = list_unit(list_sess == idx_sess);
-        spike_bxtxn = bin_spikes(TTL_trial, [-4 6 0.010 1], cohort{idx_sess}.spike_su(list_unit_sess));
+        spike_bxtxn = bin_spikes(TTL_trial, [-4 7 0.010 1], cohort{idx_sess}.spike_su(list_unit_sess));
   
         if do_zscore == 1
             unit_mean = cohort{idx_sess}.unit_mean(list_unit_sess);

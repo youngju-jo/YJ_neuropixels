@@ -9,7 +9,7 @@ APi = -100; APf = APi + 120;
 
 % visualization offsets
 offset_ML_1 = 20; offset_ML_2 = 410;
-offset_DV_1 = 230; offset_DV_2 = 100; 
+offset_DV_1 = 290; offset_DV_2 = 130; 
 
 % convert coordinates
 APc = linspace(APi,APf,5); APthickness = APc(2)-APc(1); APt = APc - APthickness/2;
@@ -24,7 +24,7 @@ end
 
 % apply offsets
 coord_display(:,1) = coord_display(:,1) - 570 + offset_ML_1;
-coord_display(:,3) = coord_display(:,3) - 230;
+coord_display(:,3) = coord_display(:,3) - offset_DV_1;
 
 figure('units','normalized','outerposition',[0 0 1 1]); set(gcf,'color','w');
 for ii = 1:5
@@ -48,11 +48,11 @@ for ii = 1:5
     %}
     
     registered_coord_display_interval = coord_display(logical(is_elsewhere),:);
-    scatter(registered_coord_display_interval(:,1),registered_coord_display_interval(:,3), '.', 'MarkerEdgeColor', 'b', 'MarkerEdgeAlpha',0.2);
+    scatter(registered_coord_display_interval(:,1),registered_coord_display_interval(:,3), 100, '.', 'MarkerEdgeColor', 'b', 'MarkerEdgeAlpha', 0.2);
     registered_coord_display_interval = coord_display(logical(is_LHb),:); %LHb
-    scatter(registered_coord_display_interval(:,1),registered_coord_display_interval(:,3), '.', 'MarkerEdgeColor', 'g', 'MarkerEdgeAlpha',0.2);
+    scatter(registered_coord_display_interval(:,1),registered_coord_display_interval(:,3), 100, '.', 'MarkerEdgeColor', 'g', 'MarkerEdgeAlpha', 0.2);
     registered_coord_display_interval = coord_display(logical(is_MHb),:); %MHb
-    scatter(registered_coord_display_interval(:,1),registered_coord_display_interval(:,3), '.', 'MarkerEdgeColor', 'r', 'MarkerEdgeAlpha',0.2);
+    scatter(registered_coord_display_interval(:,1),registered_coord_display_interval(:,3), 100, '.', 'MarkerEdgeColor', 'r', 'MarkerEdgeAlpha', 0.2);
     
     hold off;
 end

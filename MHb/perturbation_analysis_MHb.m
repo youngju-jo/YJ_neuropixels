@@ -80,7 +80,7 @@ figure,
 errorbar(1:2,[mean_pre_1 mean_post_1], [sem_pre_1 sem_post_1], '-o'); hold on;
 errorbar(3:4,[mean_pre_2 mean_post_2], [sem_pre_2 sem_post_2], '-o'); hold off;
 xlim([0 5]); xt = 1:4; xtlbl = {'Early-pre', 'Early-post', 'Late-pre', 'Late-post'}; set(gca, 'XTick', xt, 'XTickLabel', xtlbl);
-ylim([-0.3 0.4]);
+%ylim([-0.3 0.4]);
 if do_zscore
     ylabel('Total activity (z-score)');
 else

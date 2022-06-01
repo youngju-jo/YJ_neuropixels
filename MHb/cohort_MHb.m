@@ -154,15 +154,15 @@ elseif cohort_type == 2  % septum
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0174\NoImageCueLightReward\Session Data\ANM_0174_NoImageCueLightReward_20210909_163438.mat');
     s.info = '174_20210909'; cohort_info{end+1} = s;
     
-    % 176_20211108
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0176_20211108_behavior_001_g0';
-    s.d_stim = NaN;
-    s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0176\NoImageCueLightReward\Session Data\ANM_0176_NoImageCueLightReward_20211108_223301.mat');
+    % 176_ = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0176\NoImageCueLightReward\Session Data\ANM_0176_NoImageCueLightReward_20211108_223301.mat');
     s.info = '176_20211108'; cohort_info{end+1} = s;
 
     % 178_20211122
     s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0178_20211122_behavior_001_g0';
+    s.d_stim 20211108
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0176_20211108_behavior_001_g0';
     s.d_stim = NaN;
+    s.d_bhvr= NaN;
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0178\NoImageCueLightReward\Session Data\ANM_0178_NoImageCueLightReward_20211122_125121.mat');
     s.info = '178_20211122'; cohort_info{end+1} = s;
 

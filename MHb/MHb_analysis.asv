@@ -58,7 +58,7 @@ clear cohort_MHb cohort_perturbation
 cohort_flat = concat_cohort_MHb(cohort, cohort_type);
 
 % QC conditions
-cond1 = cohort_flat.isiviolation < 0.05;
+cond1 = cohort_flat.isiviolation < 0.5;
 cond2 = cohort_flat.fr > 0.2;
 cond3 = 1;
 cond4 = 1;

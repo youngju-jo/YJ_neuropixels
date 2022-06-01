@@ -14,7 +14,7 @@ else
     plot(spikeTimesOfTrials, trialIndexOfTrials, '.k')
     ylabel('Trials'); %title(strcat('Unit ID:', {' '}, num2str(idClu(unitNum))))
     ylim([0-3, max(trialIndexOfTrials)+3]);
-    xlim([preCueDur postCueDur]); xlabel('Time from event onset (s)');
+    xlim([preCueDur postCueDur]); %xlabel('Time from event onset (s)');
     set(gca, 'YDir','reverse')
     xline(0,'--');
 end
