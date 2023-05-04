@@ -5,7 +5,8 @@ if cohort_type == 1  % Tac1
     % 170
     
     % 20210905: MHb(R) / hStripe0 / 3700-3600 / CM-DiI / no /
-    s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0170_20210905_behavior_001_g0';
+    %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0170_20210905_behavior_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0170_20210905_behavior_001_g0';
     s.d_stim = NaN;
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0170\NoImageCueLightReward\Session Data\ANM_0170_NoImageCueLightReward_20210905_113925.mat');
     s.info = '170_20210905'; cohort_info{1} = s;
@@ -14,21 +15,21 @@ if cohort_type == 1  % Tac1
     
     % 20210920: MHb(R) / hStripe0 / 3600-3500 / CM-DiI / yes / with Sam
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0171_20210920_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0171_20210920_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0171_20210920_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0171\Optostim1p\Session Data\ANM_0171_Optostim1p_20210920_164219.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0171\NoImageCueLightReward\Session Data\ANM_0171_NoImageCueLightReward_20210920_161237.mat');
     s.info = '171_20210920'; cohort_info{end+1} = s;
     
     % 20210922: MHb(R) / hStripe0 / 3600-3500 / DiD / yes / with Jalal
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0171_20210922_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0171_20210922_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0171_20210922_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0171\Optostim1p\Session Data\ANM_0171_Optostim1p_20210922_175548.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0171\NoImageCueLightReward\Session Data\ANM_0171_NoImageCueLightReward_20210922_173653.mat');
     s.info = '171_20210922'; cohort_info{end+1} = s;
 
     % (T) 20210926: MHb(L) / hStripe0 / 3650-3350 / CM-DiI / yes / 
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0171_20210926_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0171_20210926_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0171_20210926_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0171\Optostim1p\Session Data\ANM_0171_Optostim1p_20210926_221943.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0171\NoImageCueLightReward\Session Data\ANM_0171_NoImageCueLightReward_20210926_220008.mat');
     s.info = '171_20210926'; cohort_info{end+1} = s;
@@ -37,28 +38,28 @@ if cohort_type == 1  % Tac1
     
     % (T) 20210928: MHb(R) / hStripe0 / 3650-3550 / CM-DiI / yes
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0173_20210928_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0173_20210928_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0173_20210928_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\Optostim1p\Session Data\ANM_0173_Optostim1p_20210928_143149.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\NoImageCueLightReward\Session Data\ANM_0173_NoImageCueLightReward_20210928_135940.mat');
     s.info = '173_20210928'; cohort_info{end+1} = s;
 
     % 20211001
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0173_20211001_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0173_20211001_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0173_20211001_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\Optostim1p\Session Data\ANM_0173_Optostim1p_20211001_181628.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\NoImageCueLightReward\Session Data\ANM_0173_NoImageCueLightReward_20211001_174346.mat');
     s.info = '173_20211001'; cohort_info{end+1} = s;
 
     % 20211002
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0173_20211002_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0173_20211002_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0173_20211002_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\Optostim1p\Session Data\ANM_0173_Optostim1p_20211002_135247.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\NoImageCueLightReward\Session Data\ANM_0173_NoImageCueLightReward_20211002_132401.mat');
     s.info = '173_20211002'; cohort_info{end+1} = s;
 
     % 20211004
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0173_20211004_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0173_20211004_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0173_20211004_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\Optostim1p\Session Data\ANM_0173_Optostim1p_20211004_181616.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0173\NoImageCueLightReward\Session Data\ANM_0173_NoImageCueLightReward_20211004_173828.mat');
     s.info = '173_20211004'; cohort_info{end+1} = s;
@@ -67,14 +68,14 @@ if cohort_type == 1  % Tac1
 
     % (?) 20210910: MHb(R) / hStripe0 / 3650-3550 / CM-DiI / yes (594 nm DPSS laser) / power fluctuation in DPSS laser
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0174_20210910_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0174_20210910_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0174_20210910_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0174\Optostim1p\Session Data\ANM_0174_Optostim1p_20210910_160827.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0174\NoImageCueLightReward\Session Data\ANM_0174_NoImageCueLightReward_20210910_153646.mat');
     s.info = '174_20210910'; cohort_info{end+1} = s;
 
     % (T) 20210915: MHb(R) / hStripe0 / 3650-3550 / DiD / yes (637 nm, 100 mW) / started fiber water-dipping
     %s.baseDir = 'D:\ephys_backup\Processed\catgt_ANM_0174_20210915_behavior_optotagging_001_g0';
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed_new\catgt_ANM_0174_20210915_behavior_optotagging_001_g0';
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0174_20210915_behavior_optotagging_001_g0';
     s.d_stim = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0174\Optostim1p\Session Data\ANM_0174_Optostim1p_20210915_175119.mat');
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0174\NoImageCueLightReward\Session Data\ANM_0174_NoImageCueLightReward_20210915_172533.mat');
     s.info = '174_20210915'; cohort_info{end+1} = s;
@@ -154,15 +155,15 @@ elseif cohort_type == 2  % septum
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0174\NoImageCueLightReward\Session Data\ANM_0174_NoImageCueLightReward_20210909_163438.mat');
     s.info = '174_20210909'; cohort_info{end+1} = s;
     
-    % 176_ = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0176\NoImageCueLightReward\Session Data\ANM_0176_NoImageCueLightReward_20211108_223301.mat');
+    % 176_20211108
+    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0176_20211108_behavior_001_g0';
+    s.d_stim = NaN;
+    s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0176\NoImageCueLightReward\Session Data\ANM_0176_NoImageCueLightReward_20211108_223301.mat');
     s.info = '176_20211108'; cohort_info{end+1} = s;
 
     % 178_20211122
     s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0178_20211122_behavior_001_g0';
-    s.d_stim 20211108
-    s.baseDir = 'O:\users\YJ\Ephys\SpikeGLX\Processed\catgt_ANM_0176_20211108_behavior_001_g0';
     s.d_stim = NaN;
-    s.d_bhvr= NaN;
     s.d_bhvr = load('C:\Users\YoungJu Jo\Dropbox\Behavior\Bpod\Data\ANM_0178\NoImageCueLightReward\Session Data\ANM_0178_NoImageCueLightReward_20211122_125121.mat');
     s.info = '178_20211122'; cohort_info{end+1} = s;
 

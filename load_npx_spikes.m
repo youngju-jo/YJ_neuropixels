@@ -1,7 +1,8 @@
-function session_data = load_npx_spikes(baseDir)
+function session_data = load_npx_spikes(baseDir, probeID)
+% when revisiting MHb/KCR datasets, add probeID to process_session script
 
 baseDir_split = split(baseDir,'\'); baseDir_stem = baseDir_split{end}(7:end);
-myKsDir = strcat(baseDir, '\', baseDir_stem, '_imec0\imec0_ks2');
+myKsDir = strcat(baseDir, '\', baseDir_stem, '_imec', num2str(probeID), '\imec', num2str(probeID), '_ks2');
 
 
 %% atlas-registered channel coordinates and brain regions
@@ -45,8 +46,8 @@ if isfile(strcat(myKsDir,'\mean_waveforms.npy'))
     
     metrics = readtable(strcat(myKsDir,'\metrics.csv'));
     
-    idClu = metrics{:,2};
-    metrics = metrics(ismember(metrics{:,2}, idClu),:);
+    idClu = metrics{:,"cluster_id"}; % changed from metrics{:,2} bc of different col spacing in 
+    metrics = metrics(ismember(metrics{:,"cluster_id"}, idClu),:);
     session_data.metrics = metrics;
     
     wf = readNPY(strcat(myKsDir,'\mean_waveforms.npy'));
@@ -80,7 +81,11 @@ end
 %% classify and quantify spikes
 
 spikeClu = readNPY(strcat(myKsDir, '\spike_clusters.npy'));
-spikeTimesSec = readNPY(strcat(myKsDir, '\spike_times_sec.npy'));
+if probeID == 0  % careful -- sampling rate of individual probes are slightly different
+    spikeTimesSec = readNPY(strcat(myKsDir, '\spike_times_sec.npy'));
+else
+    spikeTimesSec = readNPY(strcat(myKsDir, '\spike_times_sec_adj.npy'));
+end
 
 % spike assignment
 if ~exist('idClu','var')  % for before QC metric calculation
@@ -93,12 +98,35 @@ for uidx = 1:numClu
     sp_all{uidx} = spikeTimesSec(tidx_sp);
 end
 
-session_data.spike_su = sp_all; %sp_su;
-session_data.list_su = idClu; %su_list';
-%session_data.idClu = idClu;
+% 20230228: filter units based on manual curation in Phy
+fn_clusterInfo = strcat(myKsDir, '\cluster_info.tsv');
+if isfile(fn_clusterInfo)
+    clusterInfo = tdfread(fn_clusterInfo);
+    is_not_noise = (clusterInfo.group(:,1) ~= 'n');
+    
+    sp_all = sp_all(is_not_noise);
+    idClu = idClu(is_not_noise);
+    
+    if isfield(session_data, 'metrics')
+        session_data.metrics = session_data.metrics(is_not_noise,:);
+    end
+    if isfield(session_data, 'metrics_stim')
+        session_data.metrics_stim = session_data.metrics_stim(is_not_noise,:);
+    end
+    if isfield(session_data, 'wf')
+        session_data.wf = session_data.wf(is_not_noise,:,:);
+    end
+    if isfield(session_data, 'wf_stim')
+        session_data.wf_stim = session_data.wf_stim(is_not_noise,:,:);
+    end
+    
+end
+
+session_data.spike_su = sp_all;  %sp_su;
+session_data.list_su = idClu;  %su_list';
 
 if exist('metrics','var')
-    sites_all = metrics{:,17};
+    sites_all = session_data.metrics{:,"peak_channel"}; % was prev metrics{:,17}; % can use cluster_info.tsv once Phy curation is saved
     session_data.sites_su = sites_all; %sites_su;
 end
 end

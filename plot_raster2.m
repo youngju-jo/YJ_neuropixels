@@ -1,4 +1,4 @@
-function plot_raster2(eventTimes, countParam, sp, idClu, unitNum)
+function plot_raster2(eventTimes, countParam, sp, idClu, unitNum) %, drift_metric)
 % improved smoothing
 % specifiable unitNum for the first unit to visualize
 
@@ -37,6 +37,7 @@ while true
     subplot(212);
     generate_raster(eventTimes, countParam, sp, idClu, unitNum);
     %title('Spike raster');
+    %title(num2str(drift_metric(unitNum)));
     
     % browsing: 28 leftarrow / 29 rightarrow / 30 uparrow / 31 downarrow
     waitforbuttonpress;
